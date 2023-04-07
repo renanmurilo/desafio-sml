@@ -1,9 +1,15 @@
 body {
     height: 100%;
+    background-color: $background;
 }
 
 * {
     table {
         border-collapse: unset;
     }
+}
+
+.shell {
+    max-width: 90%;
+    margin: auto;
 }
