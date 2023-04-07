@@ -2,6 +2,7 @@
 import MenuDashboard from './MenuDashboard.vue';
 import Enquetes from './Enquetes.vue';
 import Pendencias from './Pendencias.vue';
+import CreatePosts from './CreatePosts.vue';
 </script>
 
 <template>
@@ -10,7 +11,10 @@ import Pendencias from './Pendencias.vue';
             <MenuDashboard />
 
             <div class="inner__dashboard">
-                <div class="content__posts__dashboard"></div>
+                <div class="content__posts__dashboard">
+                    <CreatePosts />
+                </div>
+
                 <aside class="aside__dashboard">
                     <Enquetes />
 
@@ -33,12 +37,12 @@ import Pendencias from './Pendencias.vue';
 
         .content__posts__dashboard {
             width: 100%;
-            max-width: 47rem;
+            max-width: 58.53%;
         }
 
         .aside__dashboard {
             width: 100%;
-            max-width: 28.5rem;
+            max-width: 38%;
         }
     }
 }
