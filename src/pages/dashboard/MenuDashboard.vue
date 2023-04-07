@@ -24,6 +24,7 @@
     box-shadow: 0px 0.0625rem 0.1875rem rgba(16, 24, 40, 0.1),
         0rem 0.0625rem 0.125rem rgba(16, 24, 40, 0.06);
     border-radius: 0.75rem;
+    margin-bottom: 1rem;
 
     .menu__list {
         display: flex;
