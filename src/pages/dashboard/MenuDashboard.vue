@@ -44,9 +44,17 @@
                 @include font-inter(0.875rem, 600, 0);
                 line-height: 1.25rem;
                 color: $text-light;
+                transition: all 0.4s;
 
                 &.active {
                     color: $text;
+                }
+
+                @media ($tabletMin) {
+                    &:hover {
+                        color: $text;
+                        transition: all 0.4s;
+                    }
                 }
             }
         }

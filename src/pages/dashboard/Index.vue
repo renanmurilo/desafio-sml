@@ -3,6 +3,7 @@ import MenuDashboard from './MenuDashboard.vue';
 import Enquetes from './Enquetes.vue';
 import Pendencias from './Pendencias.vue';
 import CreatePosts from './CreatePosts.vue';
+import ListPosts from './ListPosts.vue';
 </script>
 
 <template>
@@ -13,6 +14,8 @@ import CreatePosts from './CreatePosts.vue';
             <div class="inner__dashboard">
                 <div class="content__posts__dashboard">
                     <CreatePosts />
+
+                    <ListPosts />
                 </div>
 
                 <aside class="aside__dashboard">
