@@ -102,7 +102,7 @@ header {
         .widget {
             display: flex;
             align-items: center;
-            width: 36.5%;
+            width: 40%;
 
             .descativated {
                 width: 9.875rem;
