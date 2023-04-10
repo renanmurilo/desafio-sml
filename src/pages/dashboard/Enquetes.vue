@@ -146,6 +146,10 @@ export default {
     padding: 1.375rem 1.3125rem;
     margin-bottom: 1.1875rem;
 
+    @media ($mobile) {
+        margin-top: 1rem;
+    }
+
     .header__enquetes {
         display: flex;
         justify-content: space-between;
@@ -255,7 +259,7 @@ export default {
                 }
 
                 .barra {
-                    width: 24rem;
+                    width: auto;
                     background-color: $background-light;
                     border-radius: 2.8125rem;
                     height: 0.5rem;
@@ -297,6 +301,10 @@ export default {
                             position: absolute;
                             left: 0;
                             border-radius: 2.8125rem;
+
+                            @media ($mobile) {
+                                width: 100%;
+                            }
                         }
                     }
                 }

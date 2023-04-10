@@ -3,21 +3,49 @@ import Like from '@/components/icons/IconLike.vue';
 import Comment from '@/components/icons/IconComents.vue';
 import Share from '@/components/icons/IconShare.vue';
 import Dots from '@/components/icons/IconDots.vue';
+import limitLetter from '@/utils/limitLetter';
+import Send from '@/components/icons/IconSend.vue';
 
 export default {
-    components: { Like, Comment, Share, Dots },
+    components: { Like, Comment, Share, Dots, Send },
+    mixins: [limitLetter],
+    created() {
+        let posts = localStorage.posts;
+        let comments = localStorage.comments;
+
+        if (posts) {
+            this.posts = JSON.parse(posts);
+        }
+
+        if (comments) {
+            this.comments = JSON.parse(comments);
+        }
+    },
     data() {
         return {
-            comment:
-                'É TEXTÃO E É DE ❤️: A maioria que esta aqui comigo me conhece por causa do meu trabalho Talvez vocês nãosaibam, mas nos momentos mais complicados da minhacarreira, vocês estavam aqui me mandandotanta energiapositiva que me ajudaram a não desistir! E é por issoque sempre que eu posso faço questão de agradecer aparceria de vocês! 🙏🏼E hoje, nesse primeiro de maio, euagradeço pelo meu trabalho e por vocês me ajudarem arealiza-lo sempre com um sorriso no rosto. Queria MUITOque todos os trabalhadores desse Brasilzão fossemmerecem! Parece umarealidade distante, né? Mas não custa sonhar! Parabénspara você que luta diariamente para trabalhar e levar oustento da sua família mesmo diante de todas asdificuldades! E para você que não esta trabalhando:coragem e persistência!!! Dias melhores virão... se Deusquiser! ✨',
+            comment: '',
+            facebook: `https://www.facebook.com/sharer.php?u=${window.location.href}`,
+            posts: [],
+            more: 798,
+            comments: [],
+            showComment: false,
+            like: 0,
         };
+    },
+    methods: {
+        sendComment() {
+            this.comments.push({ comment: this.comment });
+            localStorage.comments = JSON.stringify(this.comments);
+            this.comment = '';
+            this.showComment = false;
+        },
     },
 };
 </script>
 
 <template>
     <div class="list__posts">
-        <div class="header__posts">
+        <div class="header__posts" v-if="posts.length">
             <h2>Ordenar suas postagens</h2>
 
             <div class="order">
@@ -31,7 +59,7 @@ export default {
             </div>
         </div>
 
-        <div class="inner__posts">
+        <div class="inner__posts" v-if="posts.length">
             <div class="post">
                 <div class="dados__post">
                     <div class="image">
@@ -46,68 +74,85 @@ export default {
                     <a href="" class="btn__more"><Dots /></a>
                 </div>
 
-                <div class="message__post">
+                <div
+                    class="message__post"
+                    v-for="(post, index) in posts"
+                    :key="index"
+                >
                     <p>
-                        É TEXTÃO E É DE ❤️: A maioria que esta aqui comigo me
-                        conhece por causa do meu trabalho Talvez vocês não
-                        saibam, mas nos momentos mais complicados da minha
-                        carreira, vocês estavam aqui me mandandotanta energia
-                        positiva que me ajudaram a não desistir! E é por isso
-                        que sempre que eu posso faço questão de agradecer a
-                        parceria de vocês! 🙏🏼E hoje, nesse primeiro de maio, eu
-                        agradeço pelo meu trabalho e por vocês me ajudarem a
-                        realiza-lo sempre com um sorriso no rosto. Queria MUITO
-                        que todos os trabalhadores desse Brasilzão fossem
-                        respeitados e valorizados como merecem! Parece uma
-                        realidade distante, né? Mas não custa sonhar! Parabéns
-                        para você que luta diariamente para trabalhar e levar o
-                        sustento da sua família mesmo diante de todas as
-                        dificuldades! E para você que não esta trabalhando:
-                        coragem e persistência!!! Dias melhores virão... se Deus
-                        quiser! ✨
+                        {{ this.limitLetter(post.mensagem, this.more) }}
 
-                        <a href="" class="link">Ler mais</a>
+                        <a
+                            @click.stop.prevent="more = 2000"
+                            class="link"
+                            v-if="more <= 798 || more >= 500"
+                        >
+                            Ler mais
+                        </a>
                     </p>
 
                     <div class="info__message">
                         <div class="widget">
-                            <a href="" class="like">
-                                <Like /> <span>103 Likes</span>
+                            <a
+                                @click.stop.prevent="like = +1"
+                                class="like"
+                                :class="{ active: like > 0 }"
+                            >
+                                <Like /> <span>{{ like }} Likes</span>
                             </a>
                         </div>
 
                         <div class="widget">
-                            <a href="" class="comments">
-                                <Comment /> <span>67 Comments</span>
+                            <a
+                                @click.stop.prevent="showComment = true"
+                                class="comments"
+                            >
+                                <Comment />
+                                <span
+                                    >{{
+                                        comments.length > 0
+                                            ? comments.length
+                                            : 0
+                                    }}
+                                    Comments
+                                </span>
                             </a>
                         </div>
 
                         <div class="widget">
-                            <a href="" class="share">
+                            <a :href="facebook" class="share">
                                 <Share /> <span>105 Share</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="comments__post">
+                <div class="comments__post" :class="{ active: showComment }">
                     <div class="box__comments">
                         <div class="image">
                             <img src="@/assets/bruno.png" alt="Bruno" />
                         </div>
 
-                        <div class="comment">
+                        <form
+                            class="comment"
+                            @submit.stop.prevent="sendComment"
+                        >
                             <textarea
                                 name=""
                                 id=""
                                 v-model="comment"
                                 class="field"
+                                :class="{ active: showComment }"
                             ></textarea>
 
-                            <p class="limit">
+                            <p class="limit" v-if="comment.length > 1300">
                                 Você ultrapassou o limite de 1300 caracteres.
                             </p>
-                        </div>
+
+                            <button type="submit" class="send">
+                                <Send />
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -120,11 +165,16 @@ export default {
     width: 100%;
     margin-top: 1rem;
 
+    @media ($mobile) {
+        margin-top: 2rem;
+    }
+
     .header__posts {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1rem;
+        flex-wrap: wrap;
 
         h2 {
             @include font-inter(1rem, 500, 0);
@@ -133,6 +183,11 @@ export default {
 
         .order {
             display: flex;
+
+            @media ($mobile) {
+                justify-content: space-between;
+                margin-top: 2rem;
+            }
 
             .select__field {
                 color: $text;
@@ -147,6 +202,11 @@ export default {
                 appearance: none;
                 -moz-appearance: none;
                 -webkit-appearance: none;
+
+                @media ($mobile) {
+                    margin-left: 0;
+                    margin-right: 1.5rem;
+                }
             }
         }
     }
@@ -157,7 +217,7 @@ export default {
             0px 0.0625rem 0.125rem rgba(16, 24, 40, 0.06);
         border-radius: 0.75rem;
         width: 100%;
-        padding: 1.0625rem 1.25rem;
+        padding: 2.0625rem 1.25rem;
 
         .dados__post {
             display: flex;
@@ -203,6 +263,10 @@ export default {
                 line-height: 1.75rem;
             }
 
+            .link {
+                color: $blue;
+            }
+
             .info__message {
                 display: flex;
                 align-items: center;
@@ -226,6 +290,11 @@ export default {
 
                     .like {
                         color: $blue;
+                        filter: grayscale(1);
+
+                        &.active {
+                            filter: grayscale(0);
+                        }
                     }
 
                     .comments,
@@ -238,7 +307,16 @@ export default {
 
         .comments__post {
             width: 100%;
-            margin-top: 2.1875rem;
+            visibility: hidden;
+            height: 0%;
+            opacity: 0;
+
+            &.active {
+                height: 100%;
+                margin-top: 2.1875rem;
+                visibility: visible;
+                opacity: 1;
+            }
 
             .box__comments {
                 display: flex;
@@ -252,19 +330,32 @@ export default {
                 .comment {
                     width: 93%;
                     height: 100%;
+                    position: relative;
 
                     .field {
                         width: 100%;
                         border: 1px solid #bac7db;
                         border-radius: 0.75rem;
-                        height: 16.25rem;
-                        padding: 0.75rem 1.5rem 0.75rem 0.75rem;
+                        height: 0%;
                         color: $text;
                         @include font-inter(1rem, 400, 0);
 
                         &::-webkit-scrollbar {
                             width: 0;
                         }
+
+                        &.active {
+                            padding: 0.75rem 1.5rem 0.75rem 0.75rem;
+                            height: 16.25rem;
+                        }
+                    }
+
+                    .send {
+                        position: absolute;
+                        bottom: -2rem;
+                        right: 0;
+                        background: transparent;
+                        border: none;
                     }
 
                     .limit {

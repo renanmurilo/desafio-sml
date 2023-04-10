@@ -1,16 +1,51 @@
-<script setup>
+<script>
 import LogoIcon from './icons/IconLogo.vue';
 import SearchIcon from './icons/IconSearch.vue';
 import CircleIcon from './icons/IconCircle.vue';
 import LanguageIcon from './icons/IconLanguage.vue';
 import NotifyIcon from './icons/IconNotify.vue';
 import ArrowIcon from './icons/IconArrow.vue';
+import MenuIcon from './icons/IconMenu.vue';
+import Dark from './icons/IconColor.vue';
+
+export default {
+    components: {
+        LogoIcon,
+        SearchIcon,
+        CircleIcon,
+        LanguageIcon,
+        NotifyIcon,
+        ArrowIcon,
+        MenuIcon,
+        Dark,
+    },
+    data() {
+        return {
+            showMenu: false,
+        };
+    },
+    methods: {
+        color(param) {
+            let color = localStorage.color;
+
+            if (color) {
+                window.localStorage.removeItem('color');
+            } else {
+                window.localStorage.color = param;
+            }
+            location.reload();
+        },
+    },
+};
 </script>
 
 <template>
     <header>
         <div class="shell">
             <div class="content__header">
+                <a @click.stop.prevent="showMenu = true" class="open__menu">
+                    <MenuIcon />
+                </a>
                 <div class="widget">
                     <a href="/">
                         <LogoIcon />
@@ -20,23 +55,23 @@ import ArrowIcon from './icons/IconArrow.vue';
                 </div>
 
                 <div class="widget">
-                    <div class="search">
+                    <a class="search">
                         <SearchIcon />
-                    </div>
+                    </a>
 
-                    <div class="circle">
+                    <a class="circle">
                         <CircleIcon />
-                    </div>
-                    <div class="notifi">
+                    </a>
+                    <a class="notifi">
                         <NotifyIcon />
-                    </div>
-                    <div class="language">
+                    </a>
+                    <a class="language">
                         <LanguageIcon />
 
-                        <div class="arrow">
+                        <a class="arrow">
                             <ArrowIcon />
-                        </div>
-                    </div>
+                        </a>
+                    </a>
                     <div class="profile">
                         <div class="description">
                             <div class="image">
@@ -52,10 +87,16 @@ import ArrowIcon from './icons/IconArrow.vue';
                             </div>
                         </div>
                     </div>
+
+                    <a class="icon__color" @click.stop.prevent="color">
+                        <Dark />
+                    </a>
                 </div>
             </div>
 
-            <nav>
+            <nav :class="{ active: showMenu }">
+                <a @click.stop.prevent="showMenu = false" class="close"> x </a>
+
                 <ul class="nav__bar">
                     <li class="nav__link">
                         <a href="/">Início</a>
@@ -91,18 +132,42 @@ header {
     height: 8.25rem;
     border-bottom: 0.25rem solid $rose;
 
+    @media ($mobile) {
+        height: 12rem;
+    }
+
     .content__header {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
         padding: 1.625rem 0;
         height: 100%;
+
+        .open__menu {
+            display: none;
+
+            @media ($mobile) {
+                display: block;
+                position: absolute;
+                top: 0.5rem;
+                left: 1rem;
+                width: 1.5625rem;
+                height: 1.5625rem;
+            }
+        }
 
         .widget {
             display: flex;
             align-items: center;
             width: 40%;
+
+            @media ($mobile) {
+                width: 100%;
+                justify-content: space-between;
+                padding-top: 1.5rem;
+            }
 
             .descativated {
                 width: 9.875rem;
@@ -183,6 +248,17 @@ header {
                     }
                 }
             }
+
+            .icon__color {
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                filter: invert(1);
+
+                @media ($mobile) {
+                    top: 1rem;
+                }
+            }
         }
     }
 
@@ -192,12 +268,54 @@ header {
         padding-bottom: 0.5rem;
         margin-left: 3.2rem;
 
+        @media ($mobile) {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background-color: $primary;
+            width: 14.75rem;
+            margin-left: 0;
+            z-index: 1;
+            padding-top: 2rem;
+            padding-left: 2rem;
+            transform: translateX(-1000px);
+            transition: all 0.4s;
+
+            &.active {
+                transform: translateX(0);
+                transition: all 0.4s;
+            }
+        }
+
+        .close {
+            display: none;
+
+            @media ($mobile) {
+                display: block;
+                position: absolute;
+                top: 2rem;
+                right: 1.5rem;
+                color: $white;
+                @include font-inter(1rem, 400);
+            }
+        }
+
         .nav__bar {
             display: flex;
             width: 100%;
 
+            @media ($mobile) {
+                flex-direction: column;
+            }
+
             .nav__link {
                 margin-right: 5.625rem;
+
+                @media ($mobile) {
+                    margin-right: 0;
+                    margin-bottom: 2rem;
+                }
 
                 &:last-child {
                     margin-right: 0;

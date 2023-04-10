@@ -41,11 +41,20 @@ import ListPosts from './ListPosts.vue';
         .content__posts__dashboard {
             width: 100%;
             max-width: 58.53%;
+
+            @media ($mobile) {
+                max-width: 100%;
+            }
         }
 
         .aside__dashboard {
             width: 100%;
             max-width: 38%;
+
+            @media ($mobile) {
+                max-width: 100%;
+                margin-bottom: 2rem;
+            }
         }
     }
 }

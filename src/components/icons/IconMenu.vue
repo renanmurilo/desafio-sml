@@ -1,0 +1,60 @@
+<template>
+    <svg
+        id="SvgjsSvg1033"
+        width="288"
+        height="288"
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:svgjs="http://svgjs.com/svgjs"
+    >
+        <defs id="SvgjsDefs1034"></defs>
+        <g id="SvgjsG1035" transform="matrix(1,0,0,1,0,0)">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+            >
+                <g data-name="Layer 2" fill="#ffffff" class="color000 svgShape">
+                    <g
+                        data-name="menu"
+                        fill="#ffffff"
+                        class="color000 svgShape"
+                    >
+                        <rect
+                            width="18"
+                            height="2"
+                            x="3"
+                            y="11"
+                            rx=".95"
+                            ry=".95"
+                            fill="#ffffff"
+                            class="color000 svgShape"
+                        ></rect>
+                        <rect
+                            width="18"
+                            height="2"
+                            x="3"
+                            y="16"
+                            rx=".95"
+                            ry=".95"
+                            fill="#ffffff"
+                            class="color000 svgShape"
+                        ></rect>
+                        <rect
+                            width="18"
+                            height="2"
+                            x="3"
+                            y="6"
+                            rx=".95"
+                            ry=".95"
+                            fill="#ffffff"
+                            class="color000 svgShape"
+                        ></rect>
+                    </g>
+                </g>
+            </svg>
+        </g>
+    </svg>
+</template>

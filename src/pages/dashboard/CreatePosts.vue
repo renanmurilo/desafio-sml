@@ -2,14 +2,38 @@
 import IconVideo from '@/components/icons/IconVideo.vue';
 import IconImage from '@/components/icons/IconImage.vue';
 import Happy from '@/components/icons/IconHappy.vue';
+import Send from '@/components/icons/IconSend.vue';
+
 export default {
-    components: { IconVideo, IconImage, Happy },
+    components: { IconVideo, IconImage, Happy, Send },
+    data() {
+        return {
+            mensagem: '',
+            posts: [],
+        };
+    },
+    created() {
+        let posts = localStorage.post;
+
+        if (posts) {
+            this.posts = JSON.parse(posts);
+        }
+    },
+    methods: {
+        sendPost() {
+            this.posts.push({ mensagem: this.mensagem });
+
+            localStorage.posts = JSON.stringify(this.posts);
+            this.posts = JSON.parse(localStorage.posts);
+            location.reload();
+        },
+    },
 };
 </script>
 
 <template>
     <div class="create">
-        <form action="" class="form__create">
+        <form action="" class="form__create" @submit.stop.prevent="sendPost">
             <div class="form__row">
                 <div class="image">
                     <img src="@/assets/image.png" alt="Image user" />
@@ -18,6 +42,7 @@ export default {
                 <textarea
                     placeholder="What's new with you?"
                     name=""
+                    v-model="mensagem"
                     id=""
                     class="field"
                 ></textarea>
@@ -63,6 +88,10 @@ export default {
                         </label>
                     </div>
                 </div>
+
+                <button type="submit" class="send">
+                    <Send />
+                </button>
             </div>
         </form>
     </div>
@@ -82,12 +111,26 @@ export default {
         padding: 1.25rem 1.5rem;
         height: 100%;
 
+        @media ($mobile) {
+            padding: 1rem;
+        }
+
         .form__row {
             width: 100%;
             height: 100%;
             display: flex;
             justify-content: flex-end;
             position: relative;
+
+            .send {
+                border: none;
+                width: 1.5rem;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background: transparent;
+                opacity: 0.5;
+            }
 
             .image {
                 width: 2rem;
@@ -119,8 +162,17 @@ export default {
                 display: flex;
                 align-items: center;
 
+                @media ($mobile) {
+                    // flex-wrap: wrap;
+                    left: 0rem;
+                }
+
                 .icons {
                     margin-right: 2.4375rem;
+
+                    @media ($mobile) {
+                        margin-right: 0;
+                    }
 
                     .field {
                         display: none;
