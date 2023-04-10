@@ -10,7 +10,7 @@ import Dots from '@/components/icons/IconDots.vue';
 <template>
     <div class="pendencias">
         <div class="header__pendencias">
-            <h3>Pendências</h3>
+            <h3>Pendências <span>2</span></h3>
 
             <a href="" class="btn__more"><Dots /></a>
         </div>
@@ -103,6 +103,22 @@ import Dots from '@/components/icons/IconDots.vue';
         h3 {
             @include font-inter(1rem, 600, 0);
             color: $text-light;
+            display: flex;
+            align-items: center;
+
+            span {
+                background-color: #ff5630;
+                border-radius: 100%;
+                height: 1.1875rem;
+                width: 1.1875rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                @include font-inter(0.75rem, 500);
+                color: $white;
+                position: relative;
+                left: 1rem;
+            }
         }
     }
 
